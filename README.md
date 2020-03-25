@@ -1,6 +1,6 @@
 # Laravel - Working with related data
 
-This practical follows on from the previous Laravel practical. We will create an additional database table and look at techniques for working with related data. 
+This practical follows on from the previous Laravel practical. We will create an additional database table and look at techniques for working with related data.
 
 ## Creating the migration
 ### Migration for the *certificates* table
@@ -45,7 +45,7 @@ class CreateCertificatesTable extends Migration
 ```
 
 ### Defining a foreign key for the *films* table
-We could edit the existing *films* table migration, but instead we will simply create a new migration that will define an additional column for the *films* table. 
+We could edit the existing *films* table migration, but instead we will simply create a new migration that will define an additional column for the *films* table.
 
 * Run the following Artisan command
 ```
@@ -89,7 +89,7 @@ class AddCertificateIdToFilmsTable extends Migration
 }
 ```
 
-* This migration simply defines an additional column and specifies a foreign key for the existing films table. Again, see the Laravel website (https://laravel.com/docs/5.5/migrations) for complete explanations.
+* This migration simply defines an additional column and specifies a foreign key for the existing films table. Again, see the Laravel website (https://laravel.com/docs/migrations) for complete explanations.
 * If we run these migration we will get an error because there is already a films table in our database. We need to remove the existing tables associated with the application and then fire off the new migrations. First, remove the existing tables by running the following Artisan command:
 
 ```
@@ -125,12 +125,12 @@ class CertificatesTableSeeder extends Seeder
          DB::table('certificates')->insert(['name' => '12','description' => 'Suitable for people aged 12 and over.']);
          DB::table('certificates')->insert(['name' => '15','description' => 'Suitable for people aged 15 and over.']);
          DB::table('certificates')->insert(['name' => '18','description' => 'Suitable for people aged 18 and over.']);
-        
+
     }
 }
 ```
 
-* Next modify the existing films seeder so that we specify the certificate_id for each film. I've added an extra film so that they don't all reference certificate 4. 
+* Next modify the existing films seeder so that we specify the certificate_id for each film. I've added an extra film so that they don't all reference certificate 4.
 
 ```
 use Illuminate\Database\Seeder;
@@ -153,7 +153,7 @@ class FilmsTableSeeder extends Seeder
 
 ```
 
-* Finally edit *DatabaseSeeder.php* to run both seeders. 
+* Finally edit *DatabaseSeeder.php* to run both seeders.
 
 ```
 use Illuminate\Database\Seeder;
@@ -204,7 +204,7 @@ class Certificate extends Model
     }
 }
 ```
-* We also need to define the inverse of this relationship so that Eloquent can assign the relevant Certificate to a Film instance. Add a certificate method to the Film class. 
+* We also need to define the inverse of this relationship so that Eloquent can assign the relevant Certificate to a Film instance. Add a certificate method to the Film class.
 
 ```
 namespace App;
@@ -219,7 +219,7 @@ class Film extends Model
     }
 }
 ```
-* *hasMany* and *belongsTo* are part of Eloquent, the Film and Certificate classes extend the base Model class so have access to these methods. You can read more at https://laravel.com/docs/5.5/eloquent-relationships#one-to-many. 
+* *hasMany* and *belongsTo* are part of Eloquent, the Film and Certificate classes extend the base Model class so have access to these methods. You can read more at https://laravel.com/docs/eloquent-relationships#one-to-many.
 * That's all we have to do to set up the ORM for Film and Certificate. To check this is working, make some changes to the details view so that you also output the film's certificate. Here's an example:
 ```
 @extends('layouts.master')
@@ -270,11 +270,11 @@ use App\Certificate;
 
 * Test this works. The user should be able to see options for a choice of certificate on the add film page (but you'll get an error if you try and add a film).
 
-### Inserting into the database. 
+### Inserting into the database.
 We follow exactly the same stages as when working with plain PHP but we will use Eloquent to save some typing. We need to:
 * Create a Film object
 * Associate this Film object with a certificate.
-* Persist the film in the database. 
+* Persist the film in the database.
 
 Modify the save method so it looks like the following:
 ```
@@ -302,5 +302,5 @@ function save(Request $request)
 * Test this works, you should now be able to add films and the database should update.
 
 ## On your own
-* The above only deals with one-to-many relationships. Have a go at creating many-to-many relationships e.g. by associating films with genres. 
-  * You will need to go through the same steps as above - migrations, seeding etc.  The laravel documentation has info on many-to-many relationships - https://laravel.com/docs/5.5/eloquent-relationships#many-to-many. 
+* The above only deals with one-to-many relationships. Have a go at creating many-to-many relationships e.g. by associating films with genres.
+  * You will need to go through the same steps as above - migrations, seeding etc.  The laravel documentation has info on many-to-many relationships - https://laravel.com/docs/eloquent-relationships#many-to-many.
